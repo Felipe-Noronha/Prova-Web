@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Produtos</title>
+</head>
+<body>
+<h1> Página de Cadastro</h1>
+<form method="post" th:action="@{/doSalvar}" th:object="${produto}" >
+
+    Imagem: <input type="file" name="image" th:field="*{imageURI}" accept="image/png, image/jpeg" /></p>
+    <br />
+
+    Nome: <input type="text" th:field="*{nome}">
+    <p th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></p>
+    <br />
+
+    Preço: <input type="text" th:field="*{preco}">
+    <p th:if="${#fields.hasErrors('preco')}" th:errors="*{preco}"></p>
+    <br />
+
+    Tipo: <input type="text" th:field="*{tipo}">
+    <p th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></p>
+    <br />
+
+    Material: <input type="text" th:field="*{material}">
+    <p th:if="${#fields.hasErrors('material')}" th:errors="*{material}"></p>
+    <br />
+
+    Tamanho: <input type="text" th:field="*{tamanho}">
+    <p th:if="${#fields.hasErrors('tamanho')}" th:errors="*{tamanho}"></p>
+    <br />
+
+    Cor: <input type="text" th:field="*{cor}">
+    <p th:if="${#fields.hasErrors('cor')}" th:errors="*{cor}"></p>
+    <br />
+    <button type="submit" onclick="funcaoAlert()">Cadastrar</button>
+</form>
+
+</body>
+
+<script>
+    function funcaoAlert() {
+        window.alert("Cadastrado com sucesso!");
+    }
+</script>
+
+
+</html>

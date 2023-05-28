@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{'/css/'+${estiloUser}}" type="text/css" rel="stylesheet">
+    <script th:src="@{/js/script.js}" defer></script>
+</head>
+<body>
+
+
+<h1>Loja de Joias</h1>
+
+<div th:replace="/fragments/commons :: header"></div>
+<!--<div th:replace='/fragments/commons :: menu(${estiloUser})'></div>-->
+<!--<div th:replace="/fragments/commons :: statusCadastro('NAO_SEI')"></div>-->
+
+<!--<button onclick="alerta()">Alerte</button>-->
+
+<!--<h2><a th:href="@{verCarrinho}">Ver carrinho</a> </h2>-->
+
+<table>
+    <tr th:each="produto: ${produtoList}" th:if="${produto.deleted==null}">
+<!--        <td>-->
+<!--            <img th:src="@{${produto.photosImagePath}}" style="width: 100px" />-->
+<!--            </p>-->
+<!--            <br />-->
+<!--        </td>-->
+        <td th:text="${produto.nome}"></td>
+        <td th:text="${produto.imageURI}"></td>
+        <td th:text="${produto.preco}"></td>
+        <td th:text="${produto.tipo}"></td>
+        <td th:text="${produto.material}"></td>
+        <td th:text="${produto.tamanho}"></td>
+        <td th:text="${produto.cor}"></td>
+<!--        <td><a th:href="@{'adicionarCarrinho/'+${produto.id}}">Adicionar a carrinho</a></td>-->
+        <td><a th:href="@{'editarPage/'+${produto.id}}">Editar</a></td>
+        <td><a th:href="@{'deletar/'+${produto.id}}">Deletar</a></td>
+    </tr>
+</table>
+
+
+<div>
+    <h1>Cadastre novo produto:</h1>
+    <a th:href="@{'cadastrarPage'}">Aqui</a></td>
+</div>
+
+</body>
+
+</html>

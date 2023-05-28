@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link th:href="@{'/css/'+${estiloUser}}" type="text/css" rel="stylesheet">
+  <script th:src="@{/js/script.js}" defer></script>
+</head>
+<body>
+
+
+<h1>Página do Administrador</h1>
+
+<div th:replace="/fragments/commons :: header"></div>
+<div th:replace='/fragments/commons :: menu(${estiloUser})'></div>
+<!--<div th:replace="/fragments/commons :: statusCadastro('NAO_SEI')"></div>-->
+
+<!--<button onclick="alerta()">Alerte</button>-->
+
+<h2>Cadastre um novo produto <a th:href="@{cadastrarPage}">aqui</a> </h2>
+
+<table>
+  <tr th:each="produto: ${produtoList}">
+    <td th:text="${produto.id}"></td>
+    <td th:text="${produto.imageURI}"></td>
+    <td th:text="${produto.preco}"></td>
+    <td th:text="${produto.tipo}"></td>
+    <td th:text="${produto.material}"></td>
+    <td th:text="${produto.tamanho}"></td>
+    <td th:text="${produto.cor}"></td>
+    <td><a th:href="@{'editarPage/'+${postagem.id}}">Editar</a></td>
+    <td><a th:href="@{'deletar/'+${postagem.id}}">Deletar</a></td>
+
+
+  </tr>
+</table>
+
+
+
+</body>
+</html>
