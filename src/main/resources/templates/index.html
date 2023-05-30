@@ -12,36 +12,15 @@
 <table>
     <tr th:each="produto: ${produtoList}"th:if="${produto.deleted==null}">
         <td th:text="${produto.nome}"></td>
-        <td th:text="${produto.imageURI}"></td>
+        <td><img th:src="${produto.photosImagePath}" height="100px" width="200px"/></td>
         <td th:text="${produto.preco}"></td>
         <td th:text="${produto.tipo}"></td>
         <td th:text="${produto.material}"></td>
         <td th:text="${produto.tamanho}"></td>
         <td th:text="${produto.cor}"></td>
         <td><a th:href="@{'adicionarCarrinho/'+${produto.id}}">Adicionar ao carrinho</a></td>
-       
     </tr>
 </table>
-
-
-<table>
-    <tr th:each="carrinho: ${carrinhoList}">
-        <td th:text="${produto.nome}"></td>
-        <td th:text="${produto.imageURI}"></td>
-        <td th:text="${produto.preco}"></td>
-        <td th:text="${produto.tipo}"></td>
-        <td th:text="${produto.material}"></td>
-        <td th:text="${produto.tamanho}"></td>
-        <td th:text="${produto.cor}"></td>
-       
-    </tr>
-</table>
-
-
-
-
-
-
 
 
 <div>

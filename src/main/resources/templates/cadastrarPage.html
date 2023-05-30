@@ -6,9 +6,10 @@
 </head>
 <body>
 <h1> Página de Cadastro</h1>
-<form method="post" th:action="@{/doSalvar}" th:object="${produto}" >
+<form method="post" enctype="multipart/form-data" th:action="@{/doSalvar}" th:object="${produto}" >
+    
 
-    Imagem: <input type="file" name="image" th:field="*{imageURI}" accept="image/png, image/jpeg" /></p>
+    Imagem: <input type="file" name="image" accept="image/png, image/jpeg" /></p>
     <br />
 
     Nome: <input type="text" th:field="*{nome}">

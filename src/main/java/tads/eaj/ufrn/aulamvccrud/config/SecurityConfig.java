@@ -19,6 +19,7 @@ public class SecurityConfig{
                     auth.requestMatchers("/cadastrarPage").hasRole("ADMIN");
                     auth.requestMatchers("/editarPage/**").hasRole("ADMIN");
                     auth.requestMatchers("/admin").hasRole("ADMIN");
+                    auth.requestMatchers("/carrinhoPage").hasRole("USER");
                     auth.anyRequest().permitAll();
                 })
                 .formLogin( login -> login.loginPage("/login").permitAll())

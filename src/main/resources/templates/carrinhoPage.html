@@ -1,25 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Loja</title>
-    <link th:href="@{'/css/'+${estiloUser}}" type="text/css" rel="stylesheet">
-    <script th:src="@{/js/script.js}" defer></script>
+    <title>Carrinho</title>
 </head>
 <body>
-<h1>Seu Carrinho</h1>
-<div th:replace="/fragments/commons :: header"></div>
-<table>
-    <tr th:each="produto: ${produtoList}"th:if="${produto.deleted==null}">
-        <td th:text="${produto.nome}"></td>
-        <td th:text="${produto.imageURI}"></td>
-        <td th:text="${produto.preco}"></td>
-        <td th:text="${produto.tipo}"></td>
-        <td th:text="${produto.material}"></td>
-        <td th:text="${produto.tamanho}"></td>
-        <td th:text="${produto.cor}"></td>
-        <td><a th:href="@{/adicionarCarrinho/{id}(id=${produto.id})}">Adicionar ao carrinho</a></td>
-    </tr>
-</table>
+    <h1>Carrinho</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Preço</th>
+                <!-- Adicione mais colunas conforme necessário -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Iterar sobre os produtos do carrinho e exibi-los -->
+            <tr th:each="produto : ${carrinho}">
+                <td th:text="${produto.nome}"></td>
+                <td th:text="${produto.preco}"></td>
+                <img th:src="${produto.photosImagePath}" height="100px" width="200px"/>
+                <!-- Adicione mais colunas conforme necessário -->
+            </tr>
+        </tbody>
+    </table>
+    <a href="/finalizarCompra">Finalizar Compra</a>
 </body>
 </html>

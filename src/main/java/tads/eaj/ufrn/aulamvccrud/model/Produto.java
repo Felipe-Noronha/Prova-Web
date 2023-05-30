@@ -27,6 +27,13 @@ public class Produto {
     String material;
     Float tamanho;
     String cor;
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (imageURI == null || id == null) return null;
+         
+        return "/user-photos/" + id + "/" + imageURI;
+    }
     
 
 //    public void tituloMaiusculo(){

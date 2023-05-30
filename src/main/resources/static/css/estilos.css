@@ -1,7 +1,40 @@
-h1 {
-    background-color: aqua;
-}
-
 .aula {
     background-color: red;
 }
+
+/*--------------------------------*/
+/*
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    box-sizing: border-box;
+    background-color: white
+}
+
+.logo{
+    width: 90%;
+    max-width: 470px;
+    background: white;
+    color: #000000;
+    margin: 20px auto;
+    border-radius: 20px;
+    padding: 40px 35px;
+    text-align: center;
+    box-shadow: 2px 4px 5px 5px black;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tabela-produtos{
+    width: 90%;
+    max-width: 470px;
+    margin: 200px auto;
+    padding: 10px 35px;
+    text-align: center;
+    left: 50%;
+    border-radius: 20px;
+    box-shadow: 2px 4px 5px 5px black;
+}
+*/

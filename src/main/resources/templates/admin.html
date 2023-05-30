@@ -9,7 +9,7 @@
 <body>
 
 
-<h1>Loja de Joias</h1>
+<h1 class="logo">Loja de Joias</h1>
 
 <div th:replace="/fragments/commons :: header"></div>
 <!--<div th:replace='/fragments/commons :: menu(${estiloUser})'></div>-->
@@ -19,7 +19,7 @@
 
 <!--<h2><a th:href="@{verCarrinho}">Ver carrinho</a> </h2>-->
 
-<table>
+<table class="tabela-produtos">
     <tr th:each="produto: ${produtoList}" th:if="${produto.deleted==null}">
 <!--        <td>-->
 <!--            <img th:src="@{${produto.photosImagePath}}" style="width: 100px" />-->
@@ -27,7 +27,7 @@
 <!--            <br />-->
 <!--        </td>-->
         <td th:text="${produto.nome}"></td>
-        <td th:text="${produto.imageURI}"></td>
+        <img th:src="${produto.photosImagePath}" height="100px" width="200px"/>
         <td th:text="${produto.preco}"></td>
         <td th:text="${produto.tipo}"></td>
         <td th:text="${produto.material}"></td>
