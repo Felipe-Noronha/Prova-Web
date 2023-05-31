@@ -20,9 +20,9 @@ public class AulaMvcCrudApplication {
         return args -> {
 
             List<Usuario> users = Stream.of(
-                    new Usuario("", "João", "123.456.789-10", "admin", encoder.encode("admin"), true),
-                    new Usuario("", "Maria", "444.456.789-10", "user1", encoder.encode("user1"), false),
-                    new Usuario("", "Pedro", "555.456.789-10", "user2", encoder.encode("user2"), false)
+                    new Usuario("", "Taniro", "123.456.789-10", "administrador", encoder.encode("administrador"), true),
+                    new Usuario("", "Angela", "444.456.789-10", "usuario", encoder.encode("usuario"), false),
+                    new Usuario("", "Felipe", "555.456.789-10", "usuario2", encoder.encode("usuario2"), false)
             ).collect(Collectors.toList());
 
             for (var e : users) {

@@ -1,14 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Edição de Produtos</title>
-</head>
 <body>
 <h1> Página de Edição</h1>
-<form method="post" th:action="@{/doSalvar}" th:object="${produto}">
+<form method="post" enctype="multipart/form-data" th:action="@{/doSalvar}" th:object="${produto}">
     <input type="hidden" th:field="*{id}">
-    Imagem: <input type="file" name="image" th:field="*{imageURI}" accept="image/png, image/jpeg" /></p> <br />
+    Imagem: <input type="file" name="image"/></p> <br />
     Nome: <input type="text" th:field="*{nome}"> <br />
     Preço: <input type="text" th:field="*{preco}"> <br/>
     Tipo: <input type="text" th:field="*{tipo}"> <br />
@@ -17,7 +13,6 @@
     Cor: <input type="text" th:field="*{cor}"> <br />
     <button type="submit" onclick="funcaoAlert()">Salvar</button>
 </form>
-
 </body>
 <script>
     function funcaoAlert() {

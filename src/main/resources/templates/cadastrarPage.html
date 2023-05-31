@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Produtos</title>
-</head>
 <body>
 <h1> Página de Cadastro</h1>
 <form method="post" enctype="multipart/form-data" th:action="@{/doSalvar}" th:object="${produto}" >
     
-
-    Imagem: <input type="file" name="image" accept="image/png, image/jpeg" /></p>
+    Imagem: <input type="file" name="image"/></p>
     <br />
 
     Nome: <input type="text" th:field="*{nome}">
@@ -37,14 +32,10 @@
     <br />
     <button type="submit" onclick="funcaoAlert()">Cadastrar</button>
 </form>
-
 </body>
-
 <script>
     function funcaoAlert() {
         window.alert("Cadastrado com sucesso!");
     }
 </script>
-
-
 </html>

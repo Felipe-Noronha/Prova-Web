@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
 <body>
 <h1> Página de Cadastro de Usuários</h1>
 <form method="post" th:action="@{/doSalvarUsuario}" th:object="${usuario}">
-
     Nome: <input type="text" th:field="*{nome}"><br />
     CPF: <input type="text" th:field="*{cpf}"><br />
     Login: <input type="text" th:field="*{login}"><br />
@@ -19,7 +14,6 @@
     <button type="submit" onclick="funcaoAlert()">Cadastrar</button>
 </form>
 </body>
-
 <script>
     function funcaoAlert() {
         window.alert("Cadastrado com sucesso!");

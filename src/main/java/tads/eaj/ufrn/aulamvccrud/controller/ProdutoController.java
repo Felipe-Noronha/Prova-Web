@@ -31,6 +31,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,12 +56,51 @@ public class ProdutoController {
         return "admin.html";
     }
 
-    @RequestMapping(value = {"/index", "/index.html"}, method = RequestMethod.GET)
-    public String getIndex(Model model){
+    @RequestMapping(value = {"/", "/index", "/index.html"}, method = RequestMethod.GET)
+    public String getIndex(Model model, HttpServletRequest request, HttpServletResponse response){
+
+        Cookie[] cookies = request.getCookies();
+        boolean visitCookieExists = false;
+        String lastAccess = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("lastAccess")) {
+                    visitCookieExists = true;
+                    // Obter o valor do cookie que representa a última data e hora de acesso
+                    lastAccess = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        // Se o cookie de data e hora de acesso não existir, criar um novo cookie com a data e hora atual
+        if (!visitCookieExists) {
+            // Obter a data e hora atual
+            LocalDateTime now = LocalDateTime.now();
+            // Converter a data e hora em uma string no formato desejado, substituindo espaços por underscores
+            String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss"));
+            formattedDateTime = formattedDateTime.replace(" ", "_"); // Replace space with underscore
+            Cookie visitCookie = new Cookie("lastAccess", formattedDateTime);
+            response.addCookie(visitCookie);
+            lastAccess = formattedDateTime;
+        }
 
         List<Produto> produtoList = service.findAll();
         model.addAttribute("produtoList", produtoList);
         model.addAttribute("estiloUser", "estilos.css");
+
+
+        HttpSession session = request.getSession();
+        List<Produto> carrinho = (List<Produto>) session.getAttribute("carrinho");
+        int quantidadeProdutos = carrinho != null ? carrinho.size() : 0;
+        model.addAttribute("quantidadeProdutos", quantidadeProdutos);
+
+
+
+
+
+
+        model.addAttribute("lastAccess", lastAccess); // Adicionar a data e hora de acesso ao modelo
         return "index.html";
     }
 
@@ -93,16 +134,16 @@ public class ProdutoController {
     @PostMapping("/doSalvar")
     public RedirectView saveProduto(Produto produto, @RequestParam("image") MultipartFile multipartFile) throws IOException {
          
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        produto.setImageURI(fileName);
-         
-        Produto savedProduto = repo.save(produto);
- 
-        String uploadDir = "user-photos/" + savedProduto.getId();
- 
-        Upload.saveFile(uploadDir, fileName, multipartFile);
-         
-        return new RedirectView("/admin", true);
+            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+            produto.setImageURI(fileName);
+             
+            Produto savedProduto = repo.save(produto);
+     
+            String uploadDir = "user-photos/" + savedProduto.getId();
+     
+            Upload.saveFile(uploadDir, fileName, multipartFile);
+            return new RedirectView("/admin", true);
+            
     }
 
 
@@ -184,9 +225,14 @@ public class ProdutoController {
     HttpSession session = request.getSession();
     List<Produto> carrinho = (List<Produto>) session.getAttribute("carrinho");
 
-    model.addAttribute("carrinho", carrinho);
-
-    return "carrinhoPage";
+    if (carrinho == null || carrinho.isEmpty()) {
+        // Carrinho está vazio, faça algo (por exemplo, redirecionar para uma página informando que o carrinho está vazio)
+        return "redirect:/index.html";
+    } else {
+        model.addAttribute("carrinho", carrinho);
+        model.addAttribute("quantidadeProdutos", carrinho.size());
+        return "carrinhoPage";
+    }
     }
 
     @GetMapping("/finalizarCompra")
@@ -200,6 +246,16 @@ public class ProdutoController {
     return "redirect:/index";
     }
 
+    @GetMapping("/logout")
+    public String doLogout(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    
+    // Invalida a sessão existente
+    session.invalidate();
+    
+    // Redireciona para a página "index"
+    return "redirect:/index";
+    }
 
 
 
