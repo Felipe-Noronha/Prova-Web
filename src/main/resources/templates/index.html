@@ -45,6 +45,9 @@
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${quantidadeProdutos}"></span>
                         </button>
+                        <div th:if="${error != null}" class="alert alert-danger" style="color: red;">
+                            <p th:text="${error}"></p>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -55,9 +58,7 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-
-                    <div th:each="produto: ${produtoList}"th:if="${produto.deleted==null}">
+                    <div th:each="produto: ${produtoList}">
                     <div class="col mb-5">
                         <div class="card h-100">
                             <!-- Product image-->
@@ -66,13 +67,13 @@
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder"th:text="${produto.nome}"></h5>
+                                    <h5 class="fw-bolder" th:text="'Nome: ' + ${produto.nome}"></h5>
                                     <!-- Product price-->
-                                    <h5 class="fw-bolder"th:text="${produto.preco}"></h5>
-                                    <h5 class="fw-bolder"th:text="${produto.tipo}"></h5>></h5>
-                                    <h5 class="fw-bolder"th:text="${produto.material}"></h5>
-                                    <h5 class="fw-bolder"th:text="${produto.tamanho}"></h5>
-                                    <h5 class="fw-bolder"th:text="${produto.cor}"></h5>
+                                    <h5 class="fw-bolder"th:text="'Preço: ' +${produto.preco}+ ' $'"></h5>
+                                    <h5 class="fw-bolder"th:text="'Tipo: ' +${produto.tipo}"></h5>></h5>
+                                    <h5 class="fw-bolder"th:text="'Material: ' +${produto.material}"></h5>
+                                    <h5 class="fw-bolder"th:text="'Tamanho: '+${produto.tamanho}+ ' cm'"></h5>
+                                    <h5 class="fw-bolder"th:text="'Cor: '+${produto.cor}"></h5>
                                 </div>
                             </div>                           
                             <!-- Product actions-->
@@ -93,5 +94,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        
     </body>
 </html>

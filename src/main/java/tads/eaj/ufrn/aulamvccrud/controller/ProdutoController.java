@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import tads.eaj.ufrn.aulamvccrud.model.Produto;
@@ -50,7 +52,7 @@ public class ProdutoController {
     @RequestMapping(value = {"/admin", "/admin.html"}, method = RequestMethod.GET)
     public String getAdmin(Model model){
 
-        List<Produto> produtoList = service.findAll();
+        List<Produto> produtoList = service.findAllNotDeleted();
         model.addAttribute("produtoList", produtoList);
         model.addAttribute("estiloUser", "estilos.css");
         return "admin.html";
@@ -85,7 +87,7 @@ public class ProdutoController {
             lastAccess = formattedDateTime;
         }
 
-        List<Produto> produtoList = service.findAll();
+        List<Produto> produtoList = service.findAllNotDeleted();
         model.addAttribute("produtoList", produtoList);
         model.addAttribute("estiloUser", "estilos.css");
 
@@ -94,11 +96,6 @@ public class ProdutoController {
         List<Produto> carrinho = (List<Produto>) session.getAttribute("carrinho");
         int quantidadeProdutos = carrinho != null ? carrinho.size() : 0;
         model.addAttribute("quantidadeProdutos", quantidadeProdutos);
-
-
-
-
-
 
         model.addAttribute("lastAccess", lastAccess); // Adicionar a data e hora de acesso ao modelo
         return "index.html";
@@ -130,20 +127,26 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoRepository repo;
-     
     @PostMapping("/doSalvar")
-    public RedirectView saveProduto(Produto produto, @RequestParam("image") MultipartFile multipartFile) throws IOException {
-         
-            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            produto.setImageURI(fileName);
-             
-            Produto savedProduto = repo.save(produto);
-     
-            String uploadDir = "user-photos/" + savedProduto.getId();
-     
-            Upload.saveFile(uploadDir, fileName, multipartFile);
+    public RedirectView saveProduto(@Valid @ModelAttribute("produto") Produto produto,BindingResult bindingResult,RedirectAttributes redirectAttributes, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Erro ao editar o produto. Certifique-se de preencher todos os campos obrigatórios.");
             return new RedirectView("/admin", true);
-            
+        }else{
+                String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                produto.setImageURI(fileName);
+                
+                Produto savedProduto = repo.save(produto);
+        
+                String uploadDir = "user-photos/" + savedProduto.getId();
+        
+                Upload.saveFile(uploadDir, fileName, multipartFile);
+                redirectAttributes.addFlashAttribute("success", "Produto editado com sucesso!");
+                return new RedirectView("/admin", true);
+
+        }
+
     }
 
 
@@ -221,12 +224,12 @@ public class ProdutoController {
 
 
     @GetMapping("/carrinhoPage")
-    public String exibirCarrinho(Model model, HttpServletRequest request) {
+    public String exibirCarrinho(Model model, HttpServletRequest request,RedirectAttributes redirectAttributes) {
     HttpSession session = request.getSession();
     List<Produto> carrinho = (List<Produto>) session.getAttribute("carrinho");
 
     if (carrinho == null || carrinho.isEmpty()) {
-        // Carrinho está vazio, faça algo (por exemplo, redirecionar para uma página informando que o carrinho está vazio)
+        redirectAttributes.addFlashAttribute("error", "O seu carrinho está vazio.");
         return "redirect:/index.html";
     } else {
         model.addAttribute("carrinho", carrinho);

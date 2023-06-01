@@ -33,31 +33,24 @@ public class ProdutoService {
     public Optional<Produto> findById(String id){
        return repository.findById(id);
     }
+    /*
      public void delete(String id){
         repository.deleteById(id);
     }
-    
+     */
 
-    /*
-    public Optional<Produto> findById(String id){
-        return repository.findByIdNotDeleted(id);
-    }    
-
-
-    public void delete(String id){
-        Optional<Produto> produto = this.findById(id);
-        if(produto.isPresent ()){
-        LocalDate currentDate = LocalDate.now () ;
-        Date currentDateTime = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Produto p=produto.get();
-        p.setDeleted(currentDateTime);
-        save (p);
-        }
-        else {
-            throw new RuntimeException ("Produto não encontrado");
+     public void delete(String id) {
+        Optional<Produto> produtoOptional = repository.findById(id);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+            produto.setDeleted(LocalDateTime.now()); // Definir a data e hora atual local
+            repository.save(produto);
         }
     }
-    */
+
+    public List<Produto> findAllNotDeleted(){
+        return repository.findAllNotDeleted();
+    }
 
 }
 

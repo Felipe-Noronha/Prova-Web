@@ -4,20 +4,14 @@
 <h1> Página de Edição</h1>
 <form method="post" enctype="multipart/form-data" th:action="@{/doSalvar}" th:object="${produto}">
     <input type="hidden" th:field="*{id}">
-    Imagem: <input type="file" name="image"/></p> <br />
+    Imagem: <input type="file" name="image" th:src="${produto.imageURI}"/></p> <br />
     Nome: <input type="text" th:field="*{nome}"> <br />
     Preço: <input type="text" th:field="*{preco}"> <br/>
     Tipo: <input type="text" th:field="*{tipo}"> <br />
     Material: <input type="text" th:field="*{material}"> <br />
     Tamanho: <input type="text" th:field="*{tamanho}"> <br />
     Cor: <input type="text" th:field="*{cor}"> <br />
-    <button type="submit" onclick="funcaoAlert()">Salvar</button>
+    <button type="submit">Salvar</button>
 </form>
 </body>
-<script>
-    function funcaoAlert() {
-        window.alert("Editado com sucesso!");
-    }
-</script>
-
 </html>

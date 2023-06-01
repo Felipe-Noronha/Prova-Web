@@ -18,7 +18,7 @@ public class AulaMvcCrudApplication {
     @Bean
     CommandLineRunner commandLineRunner(UsuarioRepository usuarioRepository, PasswordEncoder encoder) {
         return args -> {
-
+            usuarioRepository.deleteAll();
             List<Usuario> users = Stream.of(
                     new Usuario("", "Taniro", "123.456.789-10", "administrador", encoder.encode("administrador"), true),
                     new Usuario("", "Angela", "444.456.789-10", "usuario", encoder.encode("usuario"), false),

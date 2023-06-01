@@ -1,25 +1,49 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos</title>
+    <style>
+        .produto {
+            display: inline-block;
+            border: 1px solid black;
+            padding: 10px;
+            margin: 10px;
+        }
+    </style>
+</head>
 <body>
-<table class="tabela-produtos">
-    <tr th:each="produto: ${produtoList}" th:if="${produto.deleted==null}">
-        <td th:text="${produto.nome}"></td>
+    <div th:each="produto: ${produtoList}" class="produto">
         <img th:src="${produto.photosImagePath}" height="100px" width="200px"/>
-        <td th:text="${produto.preco}"></td>
-        <td th:text="${produto.tipo}"></td>
-        <td th:text="${produto.material}"></td>
-        <td th:text="${produto.tamanho}"></td>
-        <td th:text="${produto.cor}"></td>
-        <td><a th:href="@{'editarPage/'+${produto.id}}">Editar</a></td>
-        <td><a th:href="@{'deletar/'+${produto.id}}">Deletar</a></td>
-    </tr>
-</table>
-<div>
-    <h1>Cadastre novo produto:</h1>
-    <a th:href="@{'cadastrarPage'}">Aqui</a></td>
-</div>
-</body>
-<div th:replace="/fragments/commons :: footer"></div>
+        <div>
+            <p th:text="${produto.nome}"></p>
+            <p th:text="${produto.preco}"></p>
+            <p th:text="${produto.tipo}"></p>
+            <p th:text="${produto.material}"></p>
+            <p th:text="${produto.tamanho}"></p>
+            <p th:text="${produto.cor}"></p>
+        </div>
+        <div>
+            <a th:href="@{'editarPage/'+${produto.id}}">Editar</a>
+            <a th:href="@{'deletar/'+${produto.id}}">Deletar</a>
+        </div>
+    </div>
 
+    <div>
+        <div th:if="${success != null}" class="alert alert-success" style="color: green;">
+            <p th:text="${success}"></p>
+        </div>
+        <div th:if="${error != null}" class="alert alert-danger" style="color: red;">
+            <p th:text="${error}"></p>
+        </div>
+    </div>
+
+    <div>
+        <h1>Cadastre novo produto:</h1>
+        <button type="button" onclick="window.location.href='/cadastrarPage'" class="btn btn-primary">Aqui</button>
+    </div>
+
+    <div th:replace="/fragments/commons :: footer"></div>
+</body>
 </html>

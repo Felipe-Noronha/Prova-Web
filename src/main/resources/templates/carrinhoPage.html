@@ -52,24 +52,33 @@
         <!-- Header-->
         <div th:replace="/fragments/commons :: header"></div>
         <!-- Section-->
-        <h1>Seu carrinho</h1>
-        <div th:each="produto : ${carrinho}">
-            <body>
-                <table>
-                    <tbody>
-                        <!-- Iterar sobre os produtos do carrinho e exibi-los -->
-                        <tr >
-                            <td th:text="${produto.nome}"></td>
-                            <td th:text="${produto.preco}"></td>
-                            <img th:src="${produto.photosImagePath}" height="100px" width="200px"/>
-                            <!-- Adicione mais colunas conforme necessário -->
-                        </tr>
-                    </tbody>
-                </table>
-            </body>
-
+        <div>
+            <h1>Seu carrinho</h1>
+            <button onclick="window.location.href='/finalizarCompra'">Finalizar Compra</button>
         </div>
-        <a href="/finalizarCompra">Finalizar Compra</a>
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <div th:each="produto : ${carrinho}">
+                        <div class="col mb-5">
+                            <div class="card h-100">
+                                <img class="card-img-top" th:src="${produto.photosImagePath}" alt="imagem produto" />
+                                <div class="card-body p-4">
+                                    <div class="text-center">
+                                        <!-- Product name-->
+                                        <h5 class="fw-bolder" th:text="'Nome: ' + ${produto.nome}"></h5>
+                                        <!-- Product price-->
+                                        <h5 class="fw-bolder"th:text="'Preço: ' +${produto.preco}+ ' $'"></h5>
+                                        <h5 class="fw-bolder"th:text="'Tipo: ' +${produto.tipo}"></h5>></h5>
+                                        <h5 class="fw-bolder"th:text="'Material: ' +${produto.material}"></h5>
+                                        <h5 class="fw-bolder"th:text="'Tamanho: '+${produto.tamanho}+ ' cm'"></h5>
+                                        <h5 class="fw-bolder"th:text="'Cor: '+${produto.cor}"></h5>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            </div>
+        </section>
         <!-- Footer-->
         <div th:replace="/fragments/commons :: footer"></div>
         <!-- Bootstrap core JS-->

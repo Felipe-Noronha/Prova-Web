@@ -16,7 +16,7 @@ public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    Date deleted;
+    LocalDateTime deleted;
     String imageURI;
     @NotBlank
     @Size(max = 20, min = 4)
@@ -34,9 +34,5 @@ public class Produto {
          
         return "/user-photos/" + id + "/" + imageURI;
     }
-    
 
-//    public void tituloMaiusculo(){
-//        this.titulo.toUpperCase();
-//    }
 }
