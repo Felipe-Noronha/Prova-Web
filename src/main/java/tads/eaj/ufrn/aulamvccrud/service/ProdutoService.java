@@ -21,7 +21,6 @@ public class ProdutoService {
     }
 
     public void save(Produto p){
-//        p.tituloMaiusculo();
         repository.save(p);
     }
 
@@ -43,7 +42,7 @@ public class ProdutoService {
         Optional<Produto> produtoOptional = repository.findById(id);
         if (produtoOptional.isPresent()) {
             Produto produto = produtoOptional.get();
-            produto.setDeleted(LocalDateTime.now()); // Definir a data e hora atual local
+            produto.setDeleted(LocalDateTime.now());
             repository.save(produto);
         }
     }

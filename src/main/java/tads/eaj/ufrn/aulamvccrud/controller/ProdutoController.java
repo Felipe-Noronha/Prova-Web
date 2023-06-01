@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import tads.eaj.ufrn.aulamvccrud.model.Produto;
+import tads.eaj.ufrn.aulamvccrud.model.Usuario;
 import tads.eaj.ufrn.aulamvccrud.service.ProdutoService;
 import tads.eaj.ufrn.aulamvccrud.util.Upload;
 import tads.eaj.ufrn.aulamvccrud.repository.ProdutoRepository;
@@ -38,6 +39,9 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @Controller
@@ -68,20 +72,17 @@ public class ProdutoController {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("lastAccess")) {
                     visitCookieExists = true;
-                    // Obter o valor do cookie que representa a última data e hora de acesso
                     lastAccess = cookie.getValue();
                     break;
                 }
             }
         }
 
-        // Se o cookie de data e hora de acesso não existir, criar um novo cookie com a data e hora atual
         if (!visitCookieExists) {
-            // Obter a data e hora atual
+
             LocalDateTime now = LocalDateTime.now();
-            // Converter a data e hora em uma string no formato desejado, substituindo espaços por underscores
             String formattedDateTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss"));
-            formattedDateTime = formattedDateTime.replace(" ", "_"); // Replace space with underscore
+            formattedDateTime = formattedDateTime.replace(" ", "_");
             Cookie visitCookie = new Cookie("lastAccess", formattedDateTime);
             response.addCookie(visitCookie);
             lastAccess = formattedDateTime;
@@ -97,7 +98,16 @@ public class ProdutoController {
         int quantidadeProdutos = carrinho != null ? carrinho.size() : 0;
         model.addAttribute("quantidadeProdutos", quantidadeProdutos);
 
-        model.addAttribute("lastAccess", lastAccess); // Adicionar a data e hora de acesso ao modelo
+        model.addAttribute("lastAccess", lastAccess); 
+
+
+       
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+       
+        model.addAttribute("username", username);
+
         return "index.html";
     }
 
@@ -109,20 +119,6 @@ public class ProdutoController {
         return "cadastrarPage";
     }
 
-
-    /* 
-    @PostMapping("/doSalvar")
-    public String doSalvar(@ModelAttribute @Valid Produto p, Errors errors){
-        if (errors.hasErrors()){
-            return "cadastrarPage";
-        }else{
-            service.save(p);
-            return "redirect:/admin";
-            
-        }
-    }
-
-    */
 
 
     @Autowired
@@ -172,38 +168,6 @@ public class ProdutoController {
         return "redirect:/admin";
     }
     
-
-    /*
-    @GetMapping("/adicionarCarrinho/{id}")
-    public String adicionarAoCarrinho(@PathVariable(name = "id") String id, HttpSession session) {
-        // Recupere o produto com base no ID fornecido
-        Optional<Produto> produtoOptional = service.findById(id);
-        if (produtoOptional.isPresent()) {
-            Produto produto = produtoOptional.get();
-            
-            // Verifique se já existe um ArrayList "carrinho" na sessão
-            List<Produto> carrinho = (List<Produto>) session.getAttribute("carrinho");
-            if (carrinho == null) {
-                carrinho = new ArrayList<>();
-            }
-            
-            // Adicione o produto ao carrinho
-            carrinho.add(produto);
-            
-            // Atualize o atributo "carrinho" na sessão
-            session.setAttribute("carrinho", carrinho);
-        }
-        
-        return "redirect:/index";
-    }
-
-    */
-
-
-
-
-
-
     
     @GetMapping("/adicionarCarrinho/{id}")
     public void adicionarAoCarrinho(@PathVariable(name = "id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -220,7 +184,6 @@ public class ProdutoController {
         session.setAttribute("carrinho", carrinho);
         response.sendRedirect("/index");
     }
-
 
 
     @GetMapping("/carrinhoPage")
@@ -241,11 +204,9 @@ public class ProdutoController {
     @GetMapping("/finalizarCompra")
     public String finalizarCompra(HttpServletRequest request) {
     HttpSession session = request.getSession();
-    
-    // Invalida a sessão existente
+
     session.invalidate();
-    
-    // Redireciona para a página "index"
+
     return "redirect:/index";
     }
 
@@ -253,10 +214,7 @@ public class ProdutoController {
     public String doLogout(HttpServletRequest request) {
     HttpSession session = request.getSession();
     
-    // Invalida a sessão existente
     session.invalidate();
-    
-    // Redireciona para a página "index"
     return "redirect:/index";
     }
 

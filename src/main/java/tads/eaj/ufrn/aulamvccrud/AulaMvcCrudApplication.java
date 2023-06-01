@@ -20,9 +20,9 @@ public class AulaMvcCrudApplication {
         return args -> {
             usuarioRepository.deleteAll();
             List<Usuario> users = Stream.of(
-                    new Usuario("", "Taniro", "123.456.789-10", "administrador", encoder.encode("administrador"), true),
-                    new Usuario("", "Angela", "444.456.789-10", "usuario", encoder.encode("usuario"), false),
-                    new Usuario("", "Felipe", "555.456.789-10", "usuario2", encoder.encode("usuario2"), false)
+                    new Usuario("", "Taniro", "123.456.789-10", "Administrador", encoder.encode("administrador"), true),
+                    new Usuario("", "Angela", "444.456.789-10", "Angela", encoder.encode("usuario"), false),
+                    new Usuario("", "Felipe", "555.456.789-10", "Felipe", encoder.encode("usuario2"), false)
             ).collect(Collectors.toList());
 
             for (var e : users) {
